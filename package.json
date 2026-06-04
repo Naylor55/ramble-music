@@ -1,0 +1,69 @@
+{
+  "name": "ling-music",
+  "version": "1.0.0",
+  "description": "聆 · Music 桌面播放器",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev:web": "cd web && npm run dev",
+    "build:web": "cd web && npm run build",
+    "electron:dev": "electron .",
+    "build": "npm run build:web && electron-builder --win"
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3"
+  },
+  "build": {
+    "appId": "com.ling.music",
+    "productName": "聆Music",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "electron/**/*",
+      "node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "web/dist",
+        "to": "web/dist",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "api-server",
+        "to": "api-server",
+        "filter": [
+          "**/*",
+          "!.git/**",
+          "!README*",
+          "!*.md",
+          "!test/**"
+        ]
+      },
+      {
+        "from": "tools/node.exe",
+        "to": "node/node.exe"
+      }
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "聆Music"
+    }
+  }
+}

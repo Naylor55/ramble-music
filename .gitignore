@@ -1,0 +1,77 @@
+# Node
+
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build
+
+dist/
+dist-electron/
+release/
+out/
+
+# Electron
+
+*.asar
+
+# Logs
+
+logs/
+*.log
+
+# IDE
+
+.idea/
+.vscode/
+*.iml
+
+# OS
+
+.DS_Store
+Thumbs.db
+
+# Env
+
+.env
+.env.local
+.env.development
+.env.production
+
+# Cache
+
+.cache/
+.eslintcache
+
+# Temporary
+
+temp/
+tmp/
+
+# Runtime
+
+*.pid
+
+# App logs
+
+app.log
+
+# Electron Builder
+
+builder-effective-config.yaml
+
+# User data
+
+user-data/
+
+# Windows
+
+desktop.ini
+
+# Local Node Runtime
+
+# 如果 tools/node.exe 需要提交到仓库，请删除下面这一行
+
+tools/node.exe
