@@ -20,7 +20,7 @@ music-app/
 cd api-server
 
 # 如果还没 clone，先执行（只需一次）：
-git clone https://github.com/Binaryify/NeteaseCloudMusicApi.git .
+git https://github.com/NeteaseCloudMusicApiEnhanced/api-enhanced.git .
 
 # 安装依赖（只需一次）
 npm install
