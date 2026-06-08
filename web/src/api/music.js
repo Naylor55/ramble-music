@@ -149,6 +149,112 @@ export async function getSongUrl(id, br = 320000) {
 /**
  * 获取歌曲详情（含封面）
  * @param {string} ids  逗号分隔的歌曲 ID，如 "123,456"
+ * 响应示例：
+ * 
+            "name": "枫（Cover）",
+            "mainTitle": "枫",
+            "additionalTitle": "（Cover）",
+            "id": 2636494127,
+            "pst": 0,
+            "t": 0,
+            "ar": [
+                {
+                    "id": 53830733,
+                    "name": "让我很悲伤_99",
+                    "tns": [],
+                    "alias": []
+                }
+            ],
+            "alia": [],
+            "pop": 100,
+            "st": 0,
+            "rt": "",
+            "fee": 0,
+            "v": 38,
+            "crbt": null,
+            "cf": "",
+            "al": {
+                "id": 250592558,
+                "name": "娃娃公主",
+                "picUrl": "https://p3.music.126.net/73xfoqBqOsZyCZ_hkNm5dA==/109951170042159459.jpg",
+                "tns": [],
+                "pic_str": "109951170042159459",
+                "pic": 109951170042159460
+            },
+            "dt": 273504,
+            "h": {
+                "br": 320000,
+                "fid": 0,
+                "size": 10943260,
+                "vd": -36449,
+                "sr": 44100
+            },
+            "m": {
+                "br": 192000,
+                "fid": 0,
+                "size": 6565973,
+                "vd": -33844,
+                "sr": 44100
+            },
+            "l": {
+                "br": 128000,
+                "fid": 0,
+                "size": 4377330,
+                "vd": -32116,
+                "sr": 44100
+            },
+            "sq": {
+                "br": 837193,
+                "fid": 0,
+                "size": 28621959,
+                "vd": -36631,
+                "sr": 44100
+            },
+            "hr": null,
+            "a": null,
+            "cd": "01",
+            "no": 51,
+            "rtUrl": null,
+            "ftype": 0,
+            "rtUrls": [],
+            "djId": 0,
+            "copyright": 0,
+            "s_id": 0,
+            "mark": 128,
+            "originCoverType": 2,
+            "originSongSimpleData": {
+                "songId": 185912,
+                "name": "枫",
+                "artists": [
+                    {
+                        "id": 6452,
+                        "name": "周杰伦"
+                    }
+                ],
+                "albumMeta": {
+                    "id": 18896,
+                    "name": "11月的萧邦"
+                }
+            },
+            "tagPicList": null,
+            "resourceState": true,
+            "version": 4,
+            "songJumpInfo": null,
+            "entertainmentTags": null,
+            "awardTags": null,
+            "displayTags": [],
+            "artistClassics": false,
+            "markTags": [],
+            "songFeature": null,
+            "single": 0,
+            "noCopyrightRcmd": null,
+            "mv": 0,
+            "rtype": 0,
+            "rurl": null,
+            "mst": 9,
+            "cp": 0,
+            "publishTime": 0
+        }
  */
 export async function getSongDetail(ids) {
   const { data } = await http.get('/song/detail', { params: { ids } })
