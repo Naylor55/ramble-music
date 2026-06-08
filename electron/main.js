@@ -121,9 +121,11 @@ function createWindow() {
 
   // 开发模式加载 Vite dev server，生产模式加载本地文件
   if (!isPacked && process.env.NODE_ENV === 'development') {
+    log(`loadURL_from_url:http://localhost:5173`)
     mainWindow.loadURL('http://localhost:5173')
   } else {
     const indexPath = getResourcePath('web', 'dist', 'index.html')
+    log('LoadFilr_from_file')
     mainWindow.loadFile(indexPath)
   }
 
