@@ -4,7 +4,7 @@
       <div class="logo">聆<span class="logo-dot">·</span></div>
       <SearchBar :loading="searching" @search="doSearch" @clear="clearResults" />
       <div class="header-right">
-        <span v-if="total > 0" class="result-count">共 {{ total }} 首</span>
+        <!-- <span v-if="total > 0" class="result-count">共 {{ total }} 首</span> -->
       </div>
     </header>
 
