@@ -1,302 +1,185 @@
 # 聆 · Music
 
-基于 NeteaseCloudMusicApi + Vue3 的网页音乐播放器。
+基于 [NeteaseCloudMusicApiEnhanced](https://github.com/NeteaseCloudMusicApiEnhanced/api-enhanced) + Vue 3 + Electron 构建的网易云音乐桌面播放器。
+
+---
 
 ## 目录结构
 
 ```
 music-app/
-├── api-server/     ← NeteaseCloudMusicApi（第三步 clone 到这里）
-├── web/            ← Vue3 前端
-└── README.md
-```
-
-## 启动步骤
-
-### 第一步：启动网易云 API 服务
-
-```bash
-# 进入 api-server 目录
-cd api-server
-
-# 如果还没 clone，先执行（只需一次）：
-git https://github.com/NeteaseCloudMusicApiEnhanced/api-enhanced.git .
-
-# 安装依赖（只需一次）
-npm install
-
-# 启动服务（默认监听 3000 端口）
-node app.js
-```
-
-看到 `服务器运行在 http://localhost:3000` 说明启动成功。
-
-可以在浏览器访问 http://localhost:3000/search?keywords=周杰伦 验证。
-
-### 第二步：启动前端
-
-新开一个终端：
-
-```bash
-cd web
-
-# 安装依赖（只需一次）
-npm install
-
-# 启动开发服务器
-npm run dev
-```
-
-浏览器访问 http://localhost:5173 即可使用。
-
-## 功能
-
-- 🔍 搜索：按歌名 / 歌手名搜索
-- ▶️ 播放：点击列表任意歌曲播放
-- ⏮⏭ 上一首 / 下一首
-- ⏩ 进度条拖拽跳转
-- 🔊 音量调节 / 静音
-- 📜 歌词显示（点右下角「词」按钮）
-- 📄 加载更多搜索结果
-
-## 常见问题
-
-**Q: 搜索报错 "本地 API 服务已启动"**  
-A: 确认 `api-server/` 里的 `node app.js` 正在运行。
-
-**Q: 点击播放没声音**  
-A: 部分歌曲需要会员，url 会返回 null。可以换一首试试，或者登录网易云账号（参考 NeteaseCloudMusicApi 文档的 `/login` 接口）。
-
-**Q: 跨域报错**  
-A: 确保前端通过 `npm run dev` 启动（走 Vite proxy），不要直接打开 index.html 文件。
-# 聆 Music
-
-基于 Electron + Vue + Node.js 开发的桌面音乐播放器。
-
-## 项目结构
-
-```text
-music-app
-├── api-server                 # 本地 API 服务
-│   └── api-enhanced
-├── electron                   # Electron 主进程
-│   ├── main.js
+├── electron/               Electron 主进程
+│   ├── main.js             窗口管理 + 后台拉起 API 子进程
 │   └── preload.js
-├── web                        # Vue 前端
-│   ├── src
-│   └── dist
-├── tools
-│   └── node.exe               # 打包使用的 Node 运行时
-├── package.json
+├── web/                    Vue 3 前端
+│   ├── src/
+│   │   ├── api/music.js    所有接口封装
+│   │   ├── stores/player.js  播放状态管理（Pinia）
+│   │   └── components/
+│   │       ├── SearchBar.vue
+│   │       ├── SongList.vue
+│   │       ├── Player.vue
+│   │       └── LoginDialog.vue
+│   └── vite.config.js
+├── api-server/             NeteaseCloudMusicApiEnhanced（需手动 clone）
+│   └── api-enhanced/
+├── tools/     node.exe的安装包，打包的时候需要把node运行时打进去
+├── build/
+│   └── icon.ico            Windows 应用图标（打包用）
+├── package.json            根配置，含 Electron-builder 打包设置
 └── README.md
 ```
 
 ---
 
-## 开发环境
+## 开发环境启动
 
-### 环境要求
+需要同时运行两个服务。
 
-* Node.js 20+
-* npm 10+
+### 前置条件
 
-查看版本：
+- Node.js >= 20.20
+- 已完成 `api-server/api-enhanced/` 的 clone 和 `npm install`（见下方）
 
-```bash
-node -v
-npm -v
-```
-
----
-
-## 安装依赖
-
-根目录：
+### 第一步：初始化 API 服务（只需一次）
 
 ```bash
+cd api-server
+git clone https://github.com/NeteaseCloudMusicApiEnhanced/api-enhanced.git
+cd api-enhanced
 npm install
 ```
 
-前端：
+### 第二步：初始化前端依赖（只需一次）
 
 ```bash
 cd web
 npm install
 ```
 
-后端：
+### 第三步：启动
 
-```bash
-cd api-server/api-enhanced
-npm install
-```
-
----
-
-## 启动前端开发环境
-
-```bash
-cd web
-npm run dev
-```
-
-默认地址：
-
-```text
-http://localhost:5173
-```
-
----
-
-## 启动后端服务
-
+**终端 1 — API 服务：**
 ```bash
 cd api-server/api-enhanced
 node app.js
+# 看到 "服务器运行在 http://localhost:3000" 说明启动成功
 ```
 
-默认端口：
-
-```text
-3000
-```
-
-测试：
-
+**终端 2 — 前端开发服务器：**
 ```bash
-curl http://localhost:3000
+cd web
+npm run dev
+# 浏览器访问 http://localhost:5173
 ```
 
 ---
 
-## 启动 Electron
+## 打包为 Windows 安装包
 
-项目根目录：
+### 第一步：安装根目录依赖
 
 ```bash
-npx electron .
+# 在 music-app/ 根目录执行
+npm install
 ```
 
----
+> 首次安装需要下载 Electron 本体（约 100MB），国内网络较慢时先设置镜像：
+> ```bash
+> npm config set electron_mirror https://npmmirror.com/mirrors/electron/
+> npm config set registry https://registry.npmmirror.com
+> ```
 
-## 打包
+### 第二步：准备图标（可选）
+
+在 `build/` 目录放一个 `icon.ico`（建议 256×256）。
+
+没有图标时删除 `package.json` 中 `"icon": "build/icon.ico"` 这行也可正常打包。
+
+### 第三步：一键打包
 
 ```bash
 npm run build
 ```
 
-生成目录：
+该命令依次执行：
+1. 编译 Vue 前端 → `web/dist/`
+2. 用 electron-builder 打包为 Windows 安装程序
 
-```text
-dist-electron
+### 第四步：找到产物
+
 ```
-
-安装包位于：
-
-```text
-dist-electron/*.exe
-```
-
----
-
-## Electron 打包说明
-
-项目采用独立 Node Runtime 方案。
-
-打包时会自动包含：
-
-```text
-resources
-├── api-server
-│   └── api-enhanced
-└── node
-    └── node.exe
-```
-
-Electron 启动后会自动拉起本地 API 服务：
-
-```text
-http://localhost:3000
+dist-electron/
+└── 聆Music Setup 1.0.0.exe   ← 发给用户安装即可
 ```
 
 ---
 
-## 日志
+## 功能列表
 
-运行日志目录：
-
-```text
-%APPDATA%\聆Music\logs
-```
-
-例如：
-
-```text
-C:\Users\<用户名>\AppData\Roaming\聆Music\logs\app.log
-```
-
-日志内容包括：
-
-* Electron 启动信息
-* API 服务启动日志
-* Node Runtime 检查结果
-* 异常堆栈信息
+| 功能 | 说明 |
+|------|------|
+| 🔍 搜索 | 按歌曲名、歌手名搜索，支持加载更多 |
+| ▶️ 播放/暂停 | 点击列表任意歌曲开始播放 |
+| ⏮ ⏭ 切换 | 上一首 / 下一首 |
+| ⏩ 进度跳转 | 点击进度条任意位置跳转 |
+| 🔊 音量控制 | 滑动调节音量 / 点击图标静音 |
+| 📜 歌词 | 点击播放栏音符按钮展开歌词面板，自动滚动高亮，点击歌词行可跳转 |
+| 🖼 封面 | 列表和播放器均显示专辑封面，播放时旋转动画 |
 
 ---
 
-## 常见问题
+## 运行原理
 
-### Electron 启动后搜索失败
+```
+用户双击 .exe
+    ↓
+Electron 主进程（electron/main.js）
+    ├── child_process.spawn 拉起 api-server/api-enhanced/app.js
+    ├── 轮询 localhost:3000 等待 API 就绪
+    └── 加载 web-dist/index.html
 
-检查日志：
-
-```text
-app.log
+Vue 前端
+    └── axios → http://localhost:3000 → 网易云服务器
 ```
 
-确认：
-
-```text
-nodeExists=true
-appExists=true
-```
-
-若为：
-
-```text
-nodeExists=false
-```
-
-说明 Node Runtime 未正确打包。
-
----
-
-### API 服务无法启动
-
-检查：
-
-```text
-resources/api-server/api-enhanced/node_modules
-```
-
-是否存在。
-
-缺失时执行：
-
-```bash
-cd api-server/api-enhanced
-npm install
-```
-
-重新打包。
+API 服务作为子进程在后台静默运行，关闭窗口时自动退出，用户无感知。
 
 ---
 
 ## 技术栈
 
-* Electron 30
-* Vue 3
-* Vite 5
-* Node.js 20
-* Express
-* Axios
+| 层 | 技术 |
+|----|------|
+| 桌面容器 | Electron 30 |
+| 前端框架 | Vue 3 + Vite |
+| 状态管理 | Pinia |
+| HTTP 客户端 | Axios |
+| 音乐 API | NeteaseCloudMusicApiEnhanced |
+| 打包工具 | electron-builder |
+
+---
+
+## 常见问题
+
+**Q：搜索提示"请确认本地 API 服务已启动"**  
+A：确认 `api-server/api-enhanced/` 下的 `node app.js` 正在运行，且端口 3000 未被占用。
+
+**Q：部分歌曲只能听 30 秒**  
+A：这是网易云版权限制，未登录状态下有版权保护的歌曲只提供试听片段。登录网易云账号后可解除限制（登录功能开发中）。
+
+**Q：npm install 时 Electron 下载超时**  
+A：设置国内镜像后重试：
+```bash
+npm config set electron_mirror https://npmmirror.com/mirrors/electron/
+npm config set registry https://registry.npmmirror.com
+```
+
+**Q：打包后打开黑屏**  
+A：确认 `web/vite.config.js` 中设置了 `base: './'`，然后重新 `npm run build`。
+
+**Q：打包后搜索失败**  
+A：进入安装目录 `resources/api-server/api-enhanced/`，确认 `app.js` 和 `node_modules/` 都存在。
+
+**Q：开发时修改前端代码如何热更新**  
+A：使用 `cd web && npm run dev` 启动 Vite 开发服务器，修改代码后浏览器自动刷新。打包前执行一次 `npm run build` 编译最新代码。
